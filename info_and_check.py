@@ -28,7 +28,7 @@ def check_login(logins,userlogin_entry, passwlogin_entry):
         from GUI import loggedin
         logins.destroy()
         name = first(username, password)
-        print('hi')
+        
         loggedin(username, password, key, name)
     else:
         messagebox.showerror('Error', "Incorrect Username or Password.")
