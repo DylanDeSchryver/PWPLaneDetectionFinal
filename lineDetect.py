@@ -76,7 +76,7 @@ def lineDetection(cap):
         roi,  # Input edge image
         1,  # Distance resolution in pixels
         np.pi / 180,  # Angle resolution in radians
-        threshold=20,  # Min number of votes for a valid line
+        threshold=30,  # Min number of votes for a valid line
         minLineLength=50,  # Min allowed length of a line
         maxLineGap=999  # Max allowed gap between line segments for joining them
     )
