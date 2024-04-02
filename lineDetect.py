@@ -1,7 +1,6 @@
 import cv2
 import numpy as np
 from midline import midCalc
-import time
 count = 0
 arrow_countdown = 0
 rightturn = cv2.imread('rightarrow.png', cv2.IMREAD_UNCHANGED)
@@ -189,14 +188,10 @@ def lineDetection(cap):
         except ZeroDivisionError:
             pass
 
-    if locr is not None or locl is not None:
-        arrow_countdown = 75
-    else:
-        arrow_countdown = max(arrow_countdown - 1, 0)
 
-    if arrow_countdown > 0:
-        if locr is not None and locl is not None:
-            if len(locr) > len(locl):
+    if locr is not None and locl is not None:
+        try:
+            if resultr > resultl:
                 if locr is not None:
                     count = 0
                     print('turn right')
@@ -272,47 +267,49 @@ def lineDetection(cap):
 
                     # Update the frame with the overlay
                     frame[50:50 + loverlay_height, 460:460 + loverlay_width] = roi
-
-        elif locr is not None:
-
-            count = 0
-            print('turn right')
-            overlay_image = rightturn[:, :, :3]  # Extract RGB channels without alpha
-            overlay_mask = rightturn[:, :, 3]  # Extract alpha channel
-
-            # Get the region where the overlay will be placed
-            roi = frame[50:50 + roverlay_height, 460:460 + roverlay_width]
-
-            # Apply the overlay using the alpha mask
-            for c in range(3):
-                roi[:, :, c] = np.where(overlay_mask[:, :] == 255,
-                                        overlay_image[:, :, c],
-                                        roi[:, :, c])
-
-            # Update the frame with the overlay
-            frame[50:50 + roverlay_height, 460:460 + roverlay_width] = roi
-
-        elif locl is not None:
-            count = 0
-            print('turn left')
-            overlay_image = leftturn[:, :, :3]  # Extract RGB channels without alpha
-            overlay_mask = leftturn[:, :, 3]  # Extract alpha channel
-
-            # Get the region where the overlay will be placed
-            roi = frame[50:50 + loverlay_height, 460:460 + loverlay_width]
-
-            # Apply the overlay using the alpha mask
-            for c in range(3):
-                roi[:, :, c] = np.where(overlay_mask[:, :] == 255,
-                                        overlay_image[:, :, c],
-                                        roi[:, :, c])
-
-            # Update the frame with the overlay
-            frame[50:50 + loverlay_height, 460:460 + loverlay_width] = roi
-
-
-        else:
+        except ValueError:
             pass
+
+    elif locr is not None:
+
+        count = 0
+        print('turn right')
+        overlay_image = rightturn[:, :, :3]  # Extract RGB channels without alpha
+        overlay_mask = rightturn[:, :, 3]  # Extract alpha channel
+
+        # Get the region where the overlay will be placed
+        roi = frame[50:50 + roverlay_height, 460:460 + roverlay_width]
+
+        # Apply the overlay using the alpha mask
+        for c in range(3):
+            roi[:, :, c] = np.where(overlay_mask[:, :] == 255,
+                                    overlay_image[:, :, c],
+                                    roi[:, :, c])
+
+        # Update the frame with the overlay
+        frame[50:50 + roverlay_height, 460:460 + roverlay_width] = roi
+
+    elif locl is not None:
+        count = 0
+        print('turn left')
+        overlay_image = leftturn[:, :, :3]  # Extract RGB channels without alpha
+        overlay_mask = leftturn[:, :, 3]  # Extract alpha channel
+
+        # Get the region where the overlay will be placed
+        roi = frame[50:50 + loverlay_height, 460:460 + loverlay_width]
+
+        # Apply the overlay using the alpha mask
+        for c in range(3):
+            roi[:, :, c] = np.where(overlay_mask[:, :] == 255,
+                                    overlay_image[:, :, c],
+                                    roi[:, :, c])
+
+        # Update the frame with the overlay
+        frame[50:50 + loverlay_height, 460:460 + loverlay_width] = roi
+
+
+    else:
+        pass
 
 
 
