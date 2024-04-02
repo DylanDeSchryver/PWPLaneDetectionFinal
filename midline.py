@@ -1,6 +1,8 @@
 
 def midCalc(x2_ext_bottomp, x2_extp, y2_ext_bottomp, y2_extp, x2_ext_bottomn, x2_extn, y2_ext_bottomn, y2_extn):
 
+    #find points by average
+
     y2 = (y2_extp + y2_extn) / 2
 
     y1 = (y2_ext_bottomp + y2_ext_bottomn) / 2
