@@ -21,9 +21,13 @@ def lineDetection(cap):
     # Grayscale
     gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
 
+    #matchtemplate for right arrow
+
     right_arrow_template = cv2.imread('right.png')
     right_gray = cv2.cvtColor(right_arrow_template, cv2.COLOR_BGR2GRAY)
     resultr = cv2.matchTemplate(gray, right_gray, cv2.TM_CCOEFF_NORMED)
+
+    #matchtemplate for left arrow
 
     left_arrow_template = cv2.imread('left.png')
     left_gray = cv2.cvtColor(left_arrow_template, cv2.COLOR_BGR2GRAY)
@@ -110,7 +114,7 @@ def lineDetection(cap):
             if -0.1 <= slope <= 0.1:
                 break
 
-            if slope > 0:
+            if slope > 0: #get all positive or negative slopes
                 slopespx1.append(x1_r)
                 slopespy1.append(y1_r)
                 slopespx2.append(x2_r)
@@ -124,6 +128,7 @@ def lineDetection(cap):
                 pass
 
         try:
+            #avg all positive and negative slopes
             pavgx1 = sum(slopespx1)/len(slopespx1)
             pavgx2 = sum(slopespx2)/len(slopespx2)
             pavgy1 = sum(slopespy1) / len(slopespy1)
@@ -177,7 +182,7 @@ def lineDetection(cap):
             cv2.line(frame, (int(x2_ext_bottomn), int(y2_ext_bottomn)), (int(x2_extn), int(y2_extn)), (0, 255, 0), 8)
 
 
-
+            #find midline
             x1, y1, x2, y2 = midCalc(x2_ext_bottomp, x2_extp, y2_ext_bottomp, y2_extp, x2_ext_bottomn, x2_extn, y2_ext_bottomn, y2_extn)
 
 
